@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Office Jukebox</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar / Visualizer -->
+        <aside class="sidebar">
+            <div class="brand">
+                <h1>🎵 AI Jukebox</h1>
+                <p>Office Edition</p>
+            </div>
+            
+            <div class="now-playing-large">
+                <img id="np-art" src="https://via.placeholder.com/300" alt="Album Art">
+                <h2 id="np-title">Nothing Playing</h2>
+                <h3 id="np-artist">Start the party...</h3>
+            </div>
+
+            <!-- Host Player (Hidden typically, but visible here) -->
+            <div id="player-container">
+                <div id="youtube-player"></div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Suggestion Box -->
+            <div class="suggestion-box">
+                <input type="text" id="suggestion-input" placeholder="Type a song or vibe (e.g. 'Chill beats')...">
+                <button onclick="suggestSong()" id="suggest-btn">Queue It</button>
+            </div>
+
+            <!-- Queue List -->
+            <div class="queue-section">
+                <h2>Up Next</h2>
+                <div id="queue-list" class="queue-list">
+                    <!-- Items injected via JS -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

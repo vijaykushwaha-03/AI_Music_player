@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+python-dotenv
+google-api-python-client
+openai
+chromadb
+pydantic
+sqlalchemy
+sqlmodel
+requests
+python-multipart
+websockets
+jinja2

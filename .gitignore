@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual Environments
+venv/
+env/
+.venv/
+
+# Environment Variables
+.env
+
+# Database & Data
+*.db
+*.sqlite
+data/
+chroma_db/
+rl_agent_state.json
+
+# Logs
+*.log
+
+# IDEs
+.vscode/
+.idea/
