@@ -17,8 +17,9 @@ if OPENAI_API_KEY:
         model_name="text-embedding-3-small"
     )
 else:
-    logger.warning("OPENAI_API_KEY not found. RAG will fail.")
+    logger.warning("OPENAI_API_KEY not found. RAG features will be disabled (Switching to simple queue mode).")
     openai_ef = None
+
 
 # Collection
 collection = chroma_client.get_or_create_collection(

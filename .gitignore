@@ -1,26 +1,44 @@
 # Python
 __pycache__/
 *.py[cod]
+*$py.class
 *.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-# Virtual Environments
+# Virtual Environment
 venv/
 env/
-.venv/
+ENV/
 
 # Environment Variables
 .env
-
-# Database & Data
-*.db
-*.sqlite
-data/
-chroma_db/
-rl_agent_state.json
-
-# Logs
-*.log
+.env.local
 
 # IDEs
 .vscode/
 .idea/
+
+# Database / Data
+data/
+*.sqlite3
+*.db
+chroma_db/
+
+# Logs
+*.log
