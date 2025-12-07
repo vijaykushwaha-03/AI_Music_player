@@ -59,7 +59,10 @@ def correct_song_name(input_text: str) -> str:
                 ],
                 max_tokens=50
             )
-            return response.choices[0].message.content.strip()
+            content = response.choices[0].message.content
+            if not content or not content.strip():
+                return input_text
+            return content.strip()
 
         elif LLM_PROVIDER == "openrouter":
             client = get_openrouter_client()
@@ -73,7 +76,10 @@ def correct_song_name(input_text: str) -> str:
                 ],
                 max_tokens=50
             )
-            return response.choices[0].message.content.strip()
+            content = response.choices[0].message.content
+            if not content or not content.strip():
+                return input_text
+            return content.strip()
 
         elif LLM_PROVIDER == "gemini":
             model = get_gemini_client()
@@ -86,7 +92,7 @@ def correct_song_name(input_text: str) -> str:
             
             response = model.generate_content(full_prompt)
             if response.text:
-                return response.text.strip()
+                return response.text.strip() or input_text
             return input_text
 
         else:

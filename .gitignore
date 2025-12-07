@@ -19,26 +19,36 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-MANIFEST
 
 # Virtual Environment
 venv/
-env/
 ENV/
+env/
+.venv
 
 # Environment Variables
 .env
 .env.local
 
-# IDEs
+# IDE
 .vscode/
 .idea/
+*.swp
+*.swo
+*~
 
-# Database / Data
+# OS
+.DS_Store
+Thumbs.db
+
+# Project Specific
 data/
-*.sqlite3
 *.db
-chroma_db/
+*.sqlite
+*.sqlite3
 
 # Logs
 *.log
+
+# ChromaDB
+chroma_db/

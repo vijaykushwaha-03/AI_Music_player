@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
+
 <body>
     <div class="app-container">
         <!-- Sidebar / Visualizer -->
@@ -15,7 +17,7 @@
                 <h1>🎵 AI Jukebox</h1>
                 <p>Office Edition</p>
             </div>
-            
+
             <div class="now-playing-large">
                 <img id="np-art" src="https://via.placeholder.com/300" alt="Album Art">
                 <h2 id="np-title">Nothing Playing</h2>
@@ -23,8 +25,42 @@
             </div>
 
             <!-- Host Player (Hidden typically, but visible here) -->
-            <div id="player-container">
+            <div id="player-container" style="position: relative;">
                 <div id="youtube-player"></div>
+                <!-- Clickable overlay to start playback -->
+                <div id="play-overlay"
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 100; border-radius: 12px;">
+                    <div style="text-align: center; color: white;">
+                        <div style="font-size: 60px; margin-bottom: 10px;">▶️</div>
+                        <div style="font-size: 18px; font-weight: 600;">Click to Play</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Playback Controls -->
+            <div class="playback-controls-modern">
+                <!-- Progress Bar with Time Labels -->
+                <div class="time-progress-row">
+                    <span class="time-label" id="current-time">0:00</span>
+                    <input type="range" id="progress-bar" class="progress-bar-modern" min="0" max="100" value="0" step="0.1">
+                    <span class="time-label" id="total-time">0:00</span>
+                </div>
+
+                <!-- Control Buttons & Volume -->
+                <div class="control-bar-modern">
+                    <button class="control-btn-small" onclick="playNextSong()" title="Next Song">
+                        ⏭️
+                    </button>
+                    
+                    <button id="play-pause-btn" class="control-btn-play" onclick="togglePlayPause()" title="Play/Pause">
+                        <span id="play-icon">▶️</span>
+                    </button>
+                    
+                    <div class="volume-control-modern">
+                        <span class="volume-icon-modern" id="volume-icon">🔊</span>
+                        <input type="range" id="volume-slider" class="volume-slider-modern" min="0" max="100" value="100" step="1">
+                    </div>
+                </div>
             </div>
         </aside>
 
@@ -49,4 +85,5 @@
     <script src="https://www.youtube.com/iframe_api"></script>
     <script src="/static/js/app.js"></script>
 </body>
+
 </html>

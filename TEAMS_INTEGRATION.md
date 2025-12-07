@@ -1,4 +1,4 @@
-# Microsoft Teams Integration Guide
+ # Microsoft Teams Integration Guide
 
 This guide explains how to connect your AI Office Jukebox to a Microsoft Teams channel, allowing it to post updates about songs being played.
 
