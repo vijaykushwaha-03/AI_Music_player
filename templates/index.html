@@ -22,10 +22,25 @@
                 <img id="np-art" src="https://via.placeholder.com/300" alt="Album Art">
                 <h2 id="np-title">Nothing Playing</h2>
                 <h3 id="np-artist">Start the party...</h3>
+                <button id="np-heart" class="btn-heart" onclick="toggleFavorite(currentPlayingId)"
+                    style="background: transparent; border: none; font-size: 1.5rem; cursor: pointer; margin-top: 10px;">🤍</button>
+            </div>
+
+            <!-- Playlists (Simple List) -->
+            <div class="playlists-sidebar" style="margin-bottom: 20px; padding: 0 10px;">
+                <h4
+                    style="color: var(--text-secondary); margin-bottom: 10px; font-size: 0.9rem; text-transform: uppercase;">
+                    Playlists</h4>
+                <ul id="playlist-list" style="list-style: none; color: white; font-size: 0.95rem;">
+                    <!-- Injected via JS -->
+                </ul>
+                <button onclick="createPlaylist()"
+                    style="background: transparent; border: 1px solid var(--card-border); color: var(--text-secondary); padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; margin-top: 10px; width: 100%;">+
+                    New Playlist</button>
             </div>
 
             <!-- Host Player (Hidden typically, but visible here) -->
-            <div id="player-container" style="position: relative;">
+            <div id="player-container">
                 <div id="youtube-player"></div>
                 <!-- Clickable overlay to start playback -->
                 <div id="play-overlay"
@@ -42,24 +57,38 @@
                 <!-- Progress Bar with Time Labels -->
                 <div class="time-progress-row">
                     <span class="time-label" id="current-time">0:00</span>
-                    <input type="range" id="progress-bar" class="progress-bar-modern" min="0" max="100" value="0" step="0.1">
+                    <input type="range" id="progress-bar" class="progress-bar-modern" min="0" max="100" value="0"
+                        step="0.1">
                     <span class="time-label" id="total-time">0:00</span>
                 </div>
 
                 <!-- Control Buttons & Volume -->
                 <div class="control-bar-modern">
-                    <button class="control-btn-small" onclick="playNextSong()" title="Next Song">
-                        ⏭️
+                    <button class="control-btn-small" onclick="toggleShuffle()" id="shuffle-btn" title="Shuffle">
+                        <i class="icon">🔀</i>
                     </button>
-                    
+
+                    <button class="control-btn-small" onclick="playPreviousSong()" title="Previous">
+                        <i class="icon">⏮️</i>
+                    </button>
+
                     <button id="play-pause-btn" class="control-btn-play" onclick="togglePlayPause()" title="Play/Pause">
                         <span id="play-icon">▶️</span>
                     </button>
-                    
-                    <div class="volume-control-modern">
-                        <span class="volume-icon-modern" id="volume-icon">🔊</span>
-                        <input type="range" id="volume-slider" class="volume-slider-modern" min="0" max="100" value="100" step="1">
-                    </div>
+
+                    <button class="control-btn-small" onclick="playNextSong()" title="Next Song">
+                        <i class="icon">⏭️</i>
+                    </button>
+
+                    <button class="control-btn-small" onclick="toggleRepeat()" id="repeat-btn" title="Repeat">
+                        <i class="icon">🔁</i>
+                    </button>
+                </div>
+
+                <div class="volume-control-modern">
+                    <span class="volume-icon-modern" id="volume-icon">🔊</span>
+                    <input type="range" id="volume-slider" class="volume-slider-modern" min="0" max="100" value="100"
+                        step="1">
                 </div>
             </div>
         </aside>
@@ -70,6 +99,15 @@
             <div class="suggestion-box">
                 <input type="text" id="suggestion-input" placeholder="Type a song or vibe (e.g. 'Chill beats')...">
                 <button onclick="suggestSong()" id="suggest-btn">Queue It</button>
+            </div>
+
+            <!-- Recommendations Section -->
+            <div class="recommendations-section" style="margin-bottom: 3rem;">
+                <h2>Recommended for You</h2>
+                <div id="recommendations-list" class="recommendations-list"
+                    style="display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 1rem;">
+                    <!-- Items injected via JS -->
+                </div>
             </div>
 
             <!-- Queue List -->

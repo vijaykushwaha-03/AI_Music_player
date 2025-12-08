@@ -34,8 +34,32 @@ def vote(request: VoteRequest):
     return {"status": "voted", "type": request.vote_type}
 
 @router.post("/next")
-def next_song():
+def play_next():
     """Force play next song (Admin/Auto)."""
     # Use queue manager to pop next
     next_track = queue_manager.pop_next()
     return next_track
+
+@router.post("/favorite/{song_id}")
+def toggle_favorite(song_id: int):
+    """Toggle favorite status of a song."""
+    return queue_manager.vote(song_id, "favorite")
+
+class PlaylistRequest(BaseModel):
+    name: str
+
+@router.post("/playlists")
+def create_playlist(request: PlaylistRequest):
+    return queue_manager.create_playlist(request.name)
+
+@router.get("/playlists")
+def get_playlists():
+    return queue_manager.get_playlists()
+
+@router.post("/playlists/{playlist_id}/add/{song_id}")
+def add_to_playlist(playlist_id: int, song_id: int):
+    return queue_manager.add_to_playlist(playlist_id, song_id)
+
+@router.get("/recommendations")
+def get_recommendations():
+    return queue_manager.get_recommendations()

@@ -10,6 +10,7 @@ class Song(SQLModel, table=True):
     duration: int
     thumbnail_url: str
     added_at: datetime = Field(default_factory=datetime.utcnow)
+    is_favorite: bool = Field(default=False)
     embedding_id: Optional[str] = None # Link to ChromaDB
 
 class Vote(SQLModel, table=True):
@@ -22,3 +23,14 @@ class PlayHistory(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     song_id: int = Field(foreign_key="song.id")
     played_at: datetime = Field(default_factory=datetime.utcnow)
+
+class Playlist(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    name: str
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+class PlaylistSong(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    playlist_id: int = Field(foreign_key="playlist.id")
+    song_id: int = Field(foreign_key="song.id")
+    added_at: datetime = Field(default_factory=datetime.utcnow)

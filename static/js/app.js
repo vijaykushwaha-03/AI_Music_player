@@ -168,11 +168,90 @@ function renderState(data) {
             <div class="vote-controls">
                 <button class="btn-vote" onclick="vote(${song.id}, 'up')">▲</button>
                 <button class="btn-vote" onclick="vote(${song.id}, 'down')">▼</button>
+                <button class="btn-vote" onclick="toggleFavorite(${song.id})" style="color: ${song.is_favorite ? 'red' : 'inherit'}">❤</button>
             </div>
         `;
         list.appendChild(item);
     });
+
+    // Update Heart on Now Playing
+    const heartBtn = document.getElementById('np-heart');
+    if (data.now_playing) {
+        heartBtn.innerText = data.now_playing.is_favorite ? '❤️' : '🤍';
+        currentPlayingId = data.now_playing.id; // Ensure ID is set for toggle
+    }
 }
+
+async function toggleFavorite(songId) {
+    if (!songId) return;
+    try {
+        await fetch(`${API_BASE}/favorite/${songId}`, { method: 'POST' });
+        fetchState(); // Refresh UI
+    } catch (e) {
+        console.error("Error toggling favorite:", e);
+    }
+}
+
+async function createPlaylist() {
+    const name = prompt("Enter playlist name:");
+    if (!name) return;
+    try {
+        await fetch(`${API_BASE}/playlists`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: name })
+        });
+        fetchPlaylists();
+    } catch (e) {
+        console.error("Error creating playlist:", e);
+    }
+}
+
+async function fetchPlaylists() {
+    try {
+        const res = await fetch(`${API_BASE}/playlists`);
+        const playlists = await res.json();
+        const list = document.getElementById('playlist-list');
+        list.innerHTML = '';
+        playlists.forEach(pl => {
+            const li = document.createElement('li');
+            li.style.padding = '5px 0';
+            li.style.cursor = 'pointer';
+            li.innerText = `🎵 ${pl.name}`;
+            list.appendChild(li);
+        });
+    } catch (e) {
+        console.error("Error fetching playlists:", e);
+    }
+}
+
+async function fetchRecommendations() {
+    try {
+        const res = await fetch(`${API_BASE}/recommendations`);
+        const songs = await res.json();
+        const list = document.getElementById('recommendations-list');
+        list.innerHTML = '';
+        songs.forEach(song => {
+            const item = document.createElement('div');
+            item.className = 'recommendation-item';
+            item.style.minWidth = '150px';
+            item.style.cursor = 'pointer';
+            item.onclick = () => suggestSong(song.title + " " + song.artist); // Hacky way to queue
+            item.innerHTML = `
+                <img src="${song.thumbnail_url}" style="width: 100%; border-radius: 10px; margin-bottom: 5px;">
+                <div style="font-size: 0.9rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${song.title}</div>
+                <div style="font-size: 0.8rem; color: gray;">${song.artist}</div>
+            `;
+            list.appendChild(item);
+        });
+    } catch (e) {
+        console.error("Error fetching recommendations:", e);
+    }
+}
+
+// Initial fetches
+fetchPlaylists();
+fetchRecommendations();
 
 // Polling
 setInterval(fetchState, 5000);
@@ -202,6 +281,46 @@ function togglePlayPause() {
 // Play Next Song
 function playNextSong() {
     playNext(); // Uses existing function
+}
+
+// Play Previous Song (Mockup for now)
+function playPreviousSong() {
+    if (player && player.getCurrentTime() > 3) {
+        player.seekTo(0);
+    } else {
+        // In a real app, fetch previous from history
+        console.log("Previous song requested (not implemented in backend yet)");
+        player.seekTo(0);
+    }
+}
+
+// Toggle Shuffle
+let isShuffle = false;
+function toggleShuffle() {
+    isShuffle = !isShuffle;
+    const btn = document.getElementById('shuffle-btn');
+    if (isShuffle) {
+        btn.classList.add('active');
+    } else {
+        btn.classList.remove('active');
+    }
+    console.log("Shuffle:", isShuffle);
+}
+
+// Toggle Repeat
+let isRepeat = false;
+function toggleRepeat() {
+    isRepeat = !isRepeat;
+    const btn = document.getElementById('repeat-btn');
+    if (isRepeat) {
+        btn.classList.add('active');
+        // If repeat is on, we might want to loop the video
+        if (player) player.setLoop(true);
+    } else {
+        btn.classList.remove('active');
+        if (player) player.setLoop(false);
+    }
+    console.log("Repeat:", isRepeat);
 }
 
 // Format seconds to MM:SS
@@ -306,6 +425,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             } catch (e) {
                 console.error('Error toggling mute:', e);
+            }
+        });
+    }
+
+    // Search input Enter key listener
+    const suggestionInput = document.getElementById('suggestion-input');
+    if (suggestionInput) {
+        suggestionInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                suggestSong();
             }
         });
     }

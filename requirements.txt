@@ -12,4 +12,5 @@ python-multipart
 websockets
 jinja2
 google-generativeai
+sentence-transformers
 

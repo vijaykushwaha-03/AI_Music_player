@@ -60,7 +60,9 @@ def get_video_details(video_ids: list[str]):
             details[vid] = {
                 "duration": item["contentDetails"]["duration"], # Needs parsing (PT4M13S)
                 "title": item["snippet"]["title"],
-                "channel": item["snippet"]["channelTitle"]
+                "channel": item["snippet"]["channelTitle"],
+                "categoryId": item["snippet"].get("categoryId"),
+                "tags": item["snippet"].get("tags", [])
             }
         return details
     except Exception as e:
